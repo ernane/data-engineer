@@ -1,8 +1,9 @@
 import pandas as pd
+from loguru import logger
 from sqlalchemy import create_engine
 
 engine = create_engine(
-    "postgresql://data_engineer:data_engineer@localhost:5432/data_engineer"
+    "postgresql://data_engineer:data_engineer@localhost:5432/data_engineer", echo=True
 )
 
 if __name__ == "__main__":
@@ -25,7 +26,8 @@ if __name__ == "__main__":
 
     # show records
     conn = engine.connect()
-    dataFrame = pd.read_sql('select * from "customers"', conn)
+    # dataFrame = pd.read_sql('select * from "customers"', conn)
+    dataFrame = pd.read_sql_table("customers", engine)
     conn.close()
 
-    print(dataFrame)
+    logger.info(dataFrame)
